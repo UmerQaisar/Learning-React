@@ -68,31 +68,46 @@ function Header() {
 function Footer() {
 
     return (
-        <footer className='footer'>{new Date().toLocaleTimeString()} We are currently open!</footer>
+        <footer className='footer'>
+            <div className="order">
+                <p>{new Date().toLocaleTimeString()} We are currently open!</p>
+                <button className="btn">Order Now</button>
+            </div>
+        </footer>
     )
 }
 
 function Menu() {
+    const pizzaLength = pizzaData.length;
+
     return (
         <main className='menu'>
             <h2>Our Menu</h2>
-            <ul className="pizzas">
-                {pizzaData.map((pizza) => (
-                    <Pizza pizzaObj={pizza} />
-                ))}
-            </ul>
+            {pizzaLength > 0 ? (
+                    <>
+                        <p>Authentic italian Pizza</p>
+                        <ul className="pizzas">
+                            {pizzaData.map((pizza) => (
+                                <Pizza pizzaObj={pizza}/>
+                            ))}
+                        </ul>
+                    </>
+                ) :
+                (<p>
+                    We're still working on our menu
+                </p>)}
         </main>
     )
 }
 
-function Pizza(props) {
+function Pizza({pizzaObj}) {
     return (
-        <li className="pizza">
-            <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name}/>
+        <li className={`pizza ${pizzaObj.soldOut && 'sold-out'}`}>
+            <img src={pizzaObj.photoName} alt={pizzaObj.name}/>
             <div>
-                <h3>{props.pizzaObj.name}</h3>
-                <p>{props.pizzaObj.ingredients}</p>
-                <span>{props.pizzaObj.price}</span>
+                <h3>{pizzaObj.name}</h3>
+                <p>{pizzaObj.ingredients}</p>
+                <span>{ pizzaObj.soldOut ? 'Sold Out' : pizzaObj.price}</span>
             </div>
         </li>
     )
